@@ -162,10 +162,16 @@ public class MainActivity extends AppCompatActivity {
                 urlConnection.setReadTimeout(10000 /* milliseconds */);
                 urlConnection.setConnectTimeout(15000 /* milliseconds */);
                 urlConnection.connect();
-                inputStream = urlConnection.getInputStream();
-                jsonResponse = readFromStream(inputStream);
+
+                if (urlConnection.getResponseCode()!=200){
+                    inputStream = urlConnection.getInputStream();
+                    jsonResponse = readFromStream(inputStream);
+                } else{
+                    Log.e(LOG_TAG, "Error in response code: " + urlConnection.getResponseCode());
+                }
             } catch (IOException e) {
-                // TODO: Handle the exception
+                // Done : Handle the exception
+                    Log.e(LOG_TAG, "Problem retrieving the JSON result: ", e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
